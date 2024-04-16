@@ -62,3 +62,20 @@ awk -F"," -v jn="job1" 'NR > 1 && $1 == jn { if ($2 > max_id || max_id == "") { 
 
 awk -F"," -v jn="job1" 'NR > 1 && $1 == jn && ($2 > max_id || max_id == "") { max_id = $2; max_subid = $3 } END { if (max_id != "") print max_id, max_subid }' "data.csv"
 
+
+
+
+
+
+
+
+
+awk 'BEGIN{max_id=max_subid=0} $1 == "job1" {max_id=($2>max_id?$2:max_id); max_subid=($2==max_id && $3>max_subid?$3:max_subid)} END{print max_id, max_subid}' your_data.txt
+
+
+
+Final
+
+
+awk 'NR==1 {next} $1 == "job1" {max_id=($2>max_id?$2:max_id); max_subid=($2==max_id && $3>max_subid?$3:max_subid)} END{print max_id, max_subid}' your_data.txt
+
