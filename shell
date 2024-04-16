@@ -14,3 +14,6 @@ awk -F"|" -v job_name="$job_name" -v date="$date" -v status="$status_to_update" 
 
 
 awk -F"|" -v job_name="job1" -v date="2024-04-23" -v status="3" 'BEGIN { OFS=FS } NR == 1 || ($1 == job_name && $4 == date) { if (NR > 1 && $2 > max_id) { max_id = $2; max_subid = $3; } if (NR > 1 && $2 == max_id && $3 > max_subid) { max_subid = $3; } if (NR > 1 && $1 == job_name && $2 == max_id && $3 == max_subid) { $5 = status; $6 = strftime("%Y-%m-%d %H:%M:%S"); } print }' data.csv > temp.csv && mv temp.csv data.csv
+
+
+awk -F"|" -v jn="$job_name" -v id_subid="$max_id_subid" 'BEGIN { OFS=FS } NR == 1 || ($1 == jn && $2 == (split(id_subid, id_subid_array, " ")[1]) && $3 == (split(id_subid, id_subid_array, " ")[2])) { if (NR > 1) { $5 = "3"; $6 = strftime("%Y-%m-%d %H:%M:%S") } print }' "$data_file" > temp.csv && mv temp.csv "$data_file"
