@@ -20,3 +20,20 @@ awk -F"|" -v jn="$job_name" -v id_subid="$max_id_subid" 'BEGIN { OFS=FS } NR == 
 
 
 awk -F"|" -v job_name="$job_name" -v status="$status" -v max_id="$max_id" -v max_subid="$max_subid" 'BEGIN { OFS=FS } NR > 1 && $1 == job_name && $2 == max_id && $3 == max_subid { $5 = status; print } NR > 1 && !($1 == job_name && $2 == max_id && $3 == max_subid) { print }' data.csv
+
+
+
+
+id_subid=$(awk -F"," -v jn="$job_name" '
+    NR > 1 && $1 == jn {
+        if ($2 > max_id || max_id == "") {
+            max_id = $2;
+            max_subid = $3
+        } else if ($2 == max_id && $3 > max_subid) {
+            max_subid = $3
+        }
+    }
+    END {
+        print max_id, max_subid
+    }
+' "$data_file")
