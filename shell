@@ -37,3 +37,8 @@ id_subid=$(awk -F"," -v jn="$job_name" '
         print max_id, max_subid
     }
 ' "$data_file")
+
+
+
+max_id_subid=$(awk -F"," -v jn="$job_name" 'NR > 1 && $1 == jn && ($2 > max_id || max_id == "") { max_id = $2; max_subid = $3 } END { print max_id, max_subid }' "$data_file")
+
