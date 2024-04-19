@@ -79,3 +79,11 @@ Final
 
 awk 'NR==1 {next} $1 == "job1" {max_id=($2>max_id?$2:max_id); max_subid=($2==max_id && $3>max_subid?$3:max_subid)} END{print max_id, max_subid}' your_data.txt
 
+
+
+
+222
+
+
+
+ awk 'NR==1 {next} $1 == "job1" {seen_id[$2] = 1; sub_id_max[$2] = max($3, sub_id_max[$2])} END{max_id = 0; max_sub_id = 0; for (id in seen_id) { if (sub_id_max[id] > max_sub_id) { max_id = id; max_sub_id = sub_id_max[id]}}} print max_id, max_sub_id' your_data.txt
