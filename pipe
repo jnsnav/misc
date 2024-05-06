@@ -1,0 +1,24 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout code from Git main branch
+                checkout scm
+            }
+        }
+        
+        stage('Update Server Folder') {
+            steps {
+                // Use SSH to connect to the Linux server
+                script {
+                    sshagent(['your-ssh-credentials-id']) {
+                        // Run commands on the server to update the folder
+                        sh 'ssh myuser@linux-server "cd /path/to/your/folder && git pull origin main"'
+                    }
+                }
+            }
+        }
+    }
+}
